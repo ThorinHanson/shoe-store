@@ -10,6 +10,18 @@ class ShoeModel: ViewModel() {
     val shoeList: LiveData<MutableList<Shoe>>
         get() = _shoeList
 
+    var shoeName = MutableLiveData<String>("")
+
+    var company = MutableLiveData<String>("")
+
+    var size = MutableLiveData<String>("")
+
+    var description = MutableLiveData<String>("")
+
+    private val _wordAdded = MutableLiveData<Boolean>()
+    val wordAdded: LiveData<Boolean>
+    get() = _wordAdded
+
     init {
 
     }
@@ -31,9 +43,19 @@ class ShoeModel: ViewModel() {
         return movieList.toMutableList()
     }
 
-    fun addShoe(name: String, size: Double, company: String, description: String) {
-        var shoe = Shoe(name, size, company, description, emptyList())
+    private fun addShoe(shoe: Shoe) {
         _shoeList.value?.add(shoe)
+        _wordAdded.value = true
+    }
 
+    fun addShoeHandler() {
+        var shoe = Shoe(
+            this.shoeName.value!!.toString(),
+                this.size.value!!.toDouble(),
+                this.company.value!!.toString(),
+                this.description.value!!.toString(),
+                emptyList()
+            )
+        addShoe(shoe)
     }
 }
